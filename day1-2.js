@@ -1,12 +1,22 @@
 function solution1(inventory) {
-  let maxElf = 0;
+  let maxElves = [0, 0, 0];
 
   const array = inventory.trim().split("\n");
 
   let tempSum = 0;
   array.forEach((num) => {
     if (num === "") {
-      maxElf = Math.max(tempSum, maxElf);
+      for (let i = 0; i < 3; i++) {
+        const curCal = maxElves[i];
+        if (tempSum >= curCal) {
+          maxElves = [
+            ...maxElves.slice(0, i),
+            tempSum,
+            ...maxElves.slice(i, 2),
+          ];
+          break;
+        }
+      }
       tempSum = 0;
       return;
     }
@@ -15,7 +25,7 @@ function solution1(inventory) {
     tempSum += number;
   });
 
-  return maxElf;
+  return maxElves.reduce((acc, cur) => acc + cur, 0);
 }
 
 const input1 = `5794
